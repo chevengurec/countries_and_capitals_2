@@ -1,9 +1,11 @@
 package com.example.cac2.controller;
 
 import com.example.cac2.entity.City;
+import com.example.cac2.entity.Country;
 import com.example.cac2.repository.CityRepository;
 import com.example.cac2.repository.CountryRepository;
 import com.example.cac2.service.CountryService;
+import com.example.cac2.service.Impl.CountryServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,7 @@ public class CountryController {
         this.cityRepository = cityRepository;
     }
 
+
     @GetMapping("/greeting")
     public String showGreeting() {
 
@@ -33,31 +36,21 @@ public class CountryController {
 
     @GetMapping("/questions")
     public String startQuestions(Model model) {
-        model.addAttribute("message", "Germany");
+        Long id = 1L;
+        Country currentCountry = countryService.getCountryById(id);
+        String land = currentCountry.getCountry();
+        model.addAttribute("message", land);
         return "questions";
     }
-
 
     @PostMapping("/questions")
     public String getAnswer(@RequestParam String answer, Model model) {
         City city = new City(answer);
-        cityRepository.save(city);
-        return "redirect:/questions";
+        if (city.getAnswer().equals("Berlin")) {
+            return "redirect:/questions";
+        } else return "redirect:/greeting";
+
     }
-
-
-
-//    @GetMapping("/checkAnswer")
-//    public String checkCorrectAnswerOrNot(@PathVariable Long id,
-//                                          @ModelAttribute("country") Country country,
-//                                          Model model) {
-//
-//        Country currentCountry = countryService.getCountryById(id);
-//        String currentCapital = currentCountry.getCapital();
-//        if (currentCapital.equals("1")) {
-//            return "greeting";
-//        } else return "questions";
-//    }
 
 
 }

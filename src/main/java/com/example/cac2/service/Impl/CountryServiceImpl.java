@@ -5,17 +5,20 @@ import com.example.cac2.repository.CountryRepository;
 import com.example.cac2.service.CountryService;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 @Service
 public class CountryServiceImpl implements CountryService {
 
+
     private CountryRepository countryRepository;
+
+    public CountryServiceImpl(CountryRepository countryRepository) {
+        super();
+        this.countryRepository = countryRepository;
+    }
 
     @Override
     public Country getCountryById(Long id) {
+
         return countryRepository.findById(id).get();
     }
 
