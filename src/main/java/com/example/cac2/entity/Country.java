@@ -25,6 +25,10 @@ public class Country {
         this.capital = capital;
     }
 
+    public Country(String capital) {
+        this.capital = capital;
+    }
+
     public String getCountry() {
         return country;
     }

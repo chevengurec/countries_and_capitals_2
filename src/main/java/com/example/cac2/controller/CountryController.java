@@ -10,6 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 @Controller
 public class CountryController {
 
@@ -36,7 +40,8 @@ public class CountryController {
 
     @GetMapping("/questions")
     public String startQuestions(Model model) {
-        Long id = 1L;
+        List<Country> listOfCountries = countryService.getList();
+        Long id = ThreadLocalRandom.current().nextLong(1, listOfCountries.size()+1);
         Country currentCountry = countryService.getCountryById(id);
         String land = currentCountry.getCountry();
         model.addAttribute("message", land);
@@ -45,12 +50,13 @@ public class CountryController {
 
     @PostMapping("/questions")
     public String getAnswer(@RequestParam String answer, Model model) {
-        City city = new City(answer);
-        if (city.getAnswer().equals("Berlin")) {
+        Country country = new Country(answer);
+        if (country.getCapital().equals("Berlin")) {
             return "redirect:/questions";
         } else return "redirect:/greeting";
 
     }
+
 
 
 }

@@ -5,6 +5,8 @@ import com.example.cac2.repository.CountryRepository;
 import com.example.cac2.service.CountryService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CountryServiceImpl implements CountryService {
 
@@ -22,6 +24,11 @@ public class CountryServiceImpl implements CountryService {
         return countryRepository.findById(id).get();
     }
 
+
+    @Override
+    public List<Country> getList() {
+        return countryRepository.findAll();
+    }
 
 
 }

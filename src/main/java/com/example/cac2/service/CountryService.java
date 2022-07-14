@@ -9,6 +9,8 @@ public interface CountryService {
 
     public Country getCountryById(Long id);
 
+    public List<Country> getList();
+
 
 
 }
