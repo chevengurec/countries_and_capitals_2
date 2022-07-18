@@ -1,9 +1,12 @@
 package com.example.cac2.controller;
 
+import com.example.cac2.entity.America;
 import com.example.cac2.entity.City;
 import com.example.cac2.entity.Country;
+import com.example.cac2.repository.AmericaRepository;
 import com.example.cac2.repository.CityRepository;
 import com.example.cac2.repository.CountryRepository;
+import com.example.cac2.service.AmericaService;
 import com.example.cac2.service.CountryService;
 import com.example.cac2.service.Impl.CountryServiceImpl;
 import org.springframework.stereotype.Controller;
@@ -16,10 +19,16 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Controller
 public class CountryController {
+    private CityRepository cityRepository;
+
+
 
     private CountryService countryService;
     private CountryRepository countryRepository;
-    private CityRepository cityRepository;
+
+    List<Country> listOfCountries;
+    Country currentCountry;
+
 
 
     public CountryController(CountryService countryService, CountryRepository countryRepository, CityRepository cityRepository) {
@@ -31,18 +40,18 @@ public class CountryController {
     }
 
 
+
     @GetMapping("/greeting")
     public String showGreeting() {
-
         return "greeting";
 
     }
 
     @GetMapping("/questions")
     public String startQuestions(Model model) {
-        List<Country> listOfCountries = countryService.getList();
+        listOfCountries = countryService.getList();
         Long id = ThreadLocalRandom.current().nextLong(1, listOfCountries.size()+1);
-        Country currentCountry = countryService.getCountryById(id);
+        currentCountry = countryService.getCountryById(id);
         String land = currentCountry.getCountry();
         model.addAttribute("message", land);
         return "questions";
@@ -51,11 +60,13 @@ public class CountryController {
     @PostMapping("/questions")
     public String getAnswer(@RequestParam String answer, Model model) {
         Country country = new Country(answer);
-        if (country.getCapital().equals("Berlin")) {
-            return "redirect:/questions";
+        if (country.getCapital().equals(currentCountry.getCapital())) {
+            return "redirect:/america";
         } else return "redirect:/greeting";
-
     }
+
+
+
 
 
 

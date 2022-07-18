@@ -13,9 +13,6 @@ public class CountryApplication implements CommandLineRunner {
         SpringApplication.run(CountryApplication.class, args);
     }
 
-    @Autowired
-    private CountryRepository countryRepository;
-
     @Override
     public void run(String... args) throws Exception {
 
